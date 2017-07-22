@@ -18,7 +18,7 @@ public class MainApp {
 
 	}
 
-	// A candidate method for a Lambda expression! The method operate on a
+	// A using a Lambda expression. The method operate on a
 	// StringAttacher interface by using
 	// the concatenateString() method of that interface. The implementation of
 	// concatenateString() is
