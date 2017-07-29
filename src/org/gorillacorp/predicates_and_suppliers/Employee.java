@@ -1,4 +1,4 @@
-package org.gorillacorp.predicates;
+package org.gorillacorp.predicates_and_suppliers;
 
 public class Employee {
 
