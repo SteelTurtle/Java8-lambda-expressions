@@ -35,7 +35,7 @@ public class MainApp {
 		// Notice that (as usual) we do not need curly brackets and the 'return'
 		// statement
 		// within the lambda because we are returning a String...
-		Function<Employee, String> getEmployeeSurname = (employee) -> employee.getName()
+		Function<Employee, String> getEmployeeSurname = employee -> employee.getName()
 				.substring(employee.getName().indexOf(' ') + 1);
 
 		String employee4Surname = getEmployeeSurname.apply(employees.get(3));
@@ -44,7 +44,7 @@ public class MainApp {
 		System.out.println("***********FUNCTION<> part 2****************");
 		// Or we can use a Function<> in a more canonical way for a lambda, as an
 		// argument of a method:
-		Function<Employee, String> getEmployeeFirstName = (employee) -> employee.getName().substring(0,
+		Function<Employee, String> getEmployeeFirstName = employee -> employee.getName().substring(0,
 				employee.getName().indexOf(' '));
 		Random random = new Random();
 		for (Employee employee : employees) {
@@ -60,6 +60,18 @@ public class MainApp {
 
 		}
 
+		System.out.println("*************CHAINING FUNCTION<> TOGETHER*********");
+		// There is no limit to the possibility to chain Functions:
+		// when chaining Functions, each Function produces a result consumed by the
+		// subsequent Function
+		// Chaining is done through the 'andThen()' method.
+		// Let's say we want to print in upper-case the the name of each
+		// employee. and then get the first name only:
+		Function<Employee, String> fullNameToUppercase = employee -> employee.getName().toUpperCase();
+		Function<String, String> getFirstname = name -> name.substring(0, name.indexOf(' '));
+		Function<Employee, String> cutAndGetString = fullNameToUppercase.andThen(getFirstname);
+		System.out.println(cutAndGetString.apply(employees.get(0)));
+		
 	}
 
 	private static String getNameOfEmployee(Employee employee, Function<Employee, String> nameFunction) {
