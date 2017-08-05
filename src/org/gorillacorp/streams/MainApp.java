@@ -3,6 +3,7 @@ package org.gorillacorp.streams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class MainApp {
 
@@ -40,12 +41,27 @@ public class MainApp {
 		// aggregate operations. Streams can be chained to many different operations,
 		// but they must
 		// comply with two requirements: these operations must not interfere with each
-		// other by changing the stream's object source during the various transformations,
+		// other by changing the stream's object source during the various
+		// transformations,
 		// AND the transformation operations must be stateless and do not depend on
 		// values specified in previous steps
 		// of the transformations' chain
-		System.out.println("//*****Same thing, using streams this time*******//");
+		System.out.println("*****Same thing, using streams this time*******");
 		dStrings.stream().map(String::toUpperCase).filter(s -> s.toLowerCase().startsWith("d")).sorted()
 				.forEach(System.out::println);
+
+		// ****CREATING STREAMS FROM OTHER OBJECTS****//
+		// We can also create (and concatenate) Stream like this:
+		System.out.println("*************Stream.of and concatenations***********");
+		Stream<String> ioCoordinates = Stream.of("A34", "S56", "R09", "P99", "F81", "Z23", "E42");
+		Stream<String> inCoordinates = Stream.of("I58", "P99", "M32", "V12", "G06", "W08", "Z23");
+		Stream<String> concatenatedStream = Stream.concat(ioCoordinates, inCoordinates);
+		// Notice the use of peek(), using a Consumer and "delaying" the terminal
+		// operation count() so
+		// we can print the distinct elements of the concatenatedStream BEFORE the
+		// distinct count number.
+		System.out.println("Total DISTINCT elements count in two streams: "
+				+ concatenatedStream.distinct().peek(System.out::println).count());
+
 	}
 }
