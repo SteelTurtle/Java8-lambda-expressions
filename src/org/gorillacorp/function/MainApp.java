@@ -3,6 +3,7 @@ package org.gorillacorp.function;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
@@ -71,7 +72,20 @@ public class MainApp {
 		Function<String, String> getFirstname = name -> name.substring(0, name.indexOf(' '));
 		Function<Employee, String> cutAndGetString = fullNameToUppercase.andThen(getFirstname);
 		System.out.println(cutAndGetString.apply(employees.get(0)));
-		
+
+		// For more articulated operations, we can use BiFunction<> interface, which
+		// concatenates different
+		// functions in an arbitrary order. Example: we want to get the name and the age
+		// of an employee; this
+		// means we need two input parameters (the employee object's upper-case name(T)
+		// and the employee age (U))
+		BiFunction<String, Employee, String> getFullNameToUpperCaseAndThenGetAge = (fullName, employee) -> fullName
+				.concat(" " + employee.getAge());
+		System.out.println("************BiFunction<> example**************");
+		System.out.println(getFullNameToUpperCaseAndThenGetAge.apply(employees.get(3).getName(), employees.get(3)));
+		// But... how to concatenate BiFunctions<> with Functions<>? Well, we cannot because the Function<>
+		// do expect exactly ONE argument as input. So, the only possibility to concatenate BiFuction<> and
+		// Function<> is when he BiFunction<> is the very first lambda in the stream of operations: 
 	}
 
 	private static String getNameOfEmployee(Employee employee, Function<Employee, String> nameFunction) {
