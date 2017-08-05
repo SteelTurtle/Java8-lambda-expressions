@@ -1,4 +1,4 @@
-package org.gorillacorp.flatmaps;
+package org.gorillacorp.flatmaps_and_collect;
 
 import java.util.ArrayList;
 import java.util.List;

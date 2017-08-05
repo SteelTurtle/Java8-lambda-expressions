@@ -1,4 +1,4 @@
-package org.gorillacorp.flatmaps;
+package org.gorillacorp.flatmaps_and_collect;
 
 public class Employee {
 
