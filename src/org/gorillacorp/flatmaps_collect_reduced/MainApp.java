@@ -1,8 +1,9 @@
-package org.gorillacorp.flatmaps_and_collect;
+package org.gorillacorp.flatmaps_collect_reduced;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MainApp {
@@ -58,7 +59,7 @@ public class MainApp {
 		// second implementation of the collect() method, a bit more complicated: it
 		// accepts a Supplier,
 		// an Accumulator in the form of a BiConsumer, and a Combiner, this also in the
-		// form of Biconsumer.
+		// form of BiConsumer.
 		// The Supplier (1st argument) will create a new ArrayList to contain the
 		// strings, the Accumulator (2nd argument)
 		// will add the strings one by one to the array and the Combiner (3rd argument)
@@ -66,16 +67,32 @@ public class MainApp {
 		// that can be triggered by the JVM at RunTime in case it evaluates the
 		// possibility to perform the operation itself
 		// more efficiently
-		System.out.println("***********Another xample of collect()**************");
+		System.out.println("***********Another example of collect()**************");
 		List<String> collectedStrings2 = stringsList.stream().map(String::toUpperCase)
 				.filter(s -> s.toLowerCase().startsWith("d")).sorted()
 				.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
 
 		collectedStrings2.forEach(System.out::println);
 
-		// ********THE GROUPBY() METHOD*************//
+		// ********BONUS STAGE :D - THE GROUPINGBY() METHOD*************//
 		System.out.println(
 				"********Let's use the collector.groupBy() method to make maps ordered maps of employees (by age)******");
+		Map<Integer, List<Employee>> employeesByAge = departments.stream()
+				.flatMap(department -> department.getEmployees().stream())
+				.collect(Collectors.groupingBy(employee -> employee.getAge()));
+		// ... and then print them!
+		for (List<Employee> employee : employeesByAge.values()) {
+			System.out.println(employee);
+		}
+
+		// ***********AAAAAND....THE REDUCED() METHOD AT LAST!**************//
+		// The reduced() method is very useful when we want to combine all the items
+		// contained in a Stream into a single result. Some examples:
+		System.out.println(
+				"*************Example for the use of reduced() method: Find the oldest employee(s) in the company**************");
+		departments.stream().flatMap(department -> department.getEmployees().stream())
+				.reduce((e1, e2) -> e1.getAge() > e2.getAge() ? e1 : e2).ifPresent(System.out::println);
+
 	}
 
 }
